@@ -4,11 +4,11 @@ const badData = require('./data/noCrimeDataMerged.json');
 
 const { Trainer, Architect } = synaptic;
 
-const myPerceptron = new Architect.Perceptron(7, 8, 2);
+const myPerceptron = new Architect.Perceptron(6, 8, 1);
 const myTrainer = new Trainer(myPerceptron);
 
 /*
-input: [lat1, long1, lat1, long2, month, day, hour, minute, weapon] => [0 or 1 (crime), 0 or 1 (weapon)]
+input: [lat1, long1, lat1, long2, month, day, hour, minute] => [0 or 1 (crime)]
  */
 
 const train = (req, res) => {
@@ -17,15 +17,12 @@ const train = (req, res) => {
       input: [
         entry.points[0],
         entry.points[1],
-        // entry.points[2],
-        // entry.points[3],
         entry.month,
         entry.day,
         entry.hour,
         entry.minute,
-        entry.weapon,
       ],
-      output: [1, entry.weapon],
+      output: [1],
     }
   ));
 
@@ -34,15 +31,12 @@ const train = (req, res) => {
       input: [
         entry.points[0],
         entry.points[1],
-        // entry.points[2],
-        // entry.points[3],
         entry.month,
         entry.day,
         entry.hour,
         entry.minute,
-        entry.weapon,
       ],
-      output: [0, entry.weapon],
+      output: [0],
     }
   ));
 
@@ -50,7 +44,7 @@ const train = (req, res) => {
 
   myTrainer.train(mergedTrainingData, {
     rate: 0.1,
-    iterations: 20000,
+    iterations: 10000,
     error: 0.005,
     shuffle: true,
     log: 1000,
