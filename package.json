@@ -5,8 +5,9 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "synaptic": "^1.1.4",
-    "express": "^4.16.2"
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2",
+    "synaptic": "^1.1.4"
   },
   "devDependencies": {
     "csvtojson": "^1.1.9",
