@@ -60,12 +60,32 @@
                 </v-dialog>
               </v-flex>
             </v-layout>
+            <v-layout>
+              <v-flex xs6>
+                <v-text-field
+                  label="Latitude"
+                  v-model="lat"
+                  prepend-icon="trending_flat"
+                >
+                </v-text-field>
+              </v-flex>
+              <v-flex xs6>
+                <v-text-field
+                  label="Longitude"
+                  v-model="long"
+                  prepend-icon="trending_flat"
+                >
+                </v-text-field>
+              </v-flex>
+
+            </v-layout>
           </v-card-text>
 
           <v-card-actions>
             <v-btn
               @click.native="load"
               flat color="orange"
+              block
             >
               Load
             </v-btn>
@@ -77,13 +97,15 @@
 
     <v-flex xs12>
       <v-flex xs12>
-        <v-card>
+        <v-card v-if="result">
           <v-card-title primary-title>
-            <div class="headline">Map</div>
+            <div class="headline">Result</div>
           </v-card-title>
 
           <v-card-text>
-            <Map></Map>
+            <div class="display-1 text-md-center">
+              Likelihood of crime: <strong>{{ result * 10e15 }}%</strong>
+            </div>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -93,8 +115,7 @@
 
 <script>
 import moment from 'moment';
-import Map from '@/components/Heatmap/char-map';
-import locationData from '../../../data/locations.json';
+//  import locationData from '../../../data/locations.json';
 
 export default {
   name: 'Heatmap',
@@ -104,74 +125,40 @@ export default {
       timeModal: false,
       date: null,
       time: null,
+      long: -80.793537,
+      lat: 35.280771,
+      result: null,
     };
   },
   methods: {
     load() {
+      const locationData = {
+        coordinates: [[this.lat, this.long]],
+      };
       let { date, time } = this;
       date = moment(date, 'YYY-MM-DD');
       time = moment(time, 'h:mma');
 
-      // Add the timestamps to every single array item
-      for (let i = 0; i < locationData.coordinates.length; i += 1) {
-        locationData.coordinates[i].push(parseFloat(date.format('0.MM')));
-        locationData.coordinates[i].push(parseFloat(date.format('0.DD')));
-        locationData.coordinates[i].push(parseFloat(time.format('0.kk')));
-        locationData.coordinates[i].push(parseFloat(time.format('0.mm')));
-      }
+      // Add the timestamps to the loc
+      locationData.coordinates[0].push(parseFloat(date.format('0.MM')));
+      locationData.coordinates[0].push(parseFloat(date.format('0.DD')));
+      locationData.coordinates[0].push(parseFloat(time.format('0.kk')));
+      locationData.coordinates[0].push(parseFloat(time.format('0.mm')));
 
       const headers = new Headers();
       headers.append('Content-Type', 'application/json');
 
-      fetch('https://hackathon-ydjpdnorqb.now.sh/machine', {
+      fetch('http://localhost:3000/machine', {
         method: 'post',
         headers,
         body: JSON.stringify({
           input: locationData.coordinates,
         }),
       }).then(response => response.json())
-      .then((d) => {
-        // get json data in here
-        const locations = locationData.coordinates;
-        const data = d.output;
-
-        let min = 99999;
-        for (let i = 0; i < data.length; i += 1) {
-          if (data[i][0] < min) min = data[i][0];
-        }
-        let max = 0;
-        for (let i = 0; i < data.length; i += 1) {
-          if (data[i][0] > max) max = data[i][0];
-        }
-
-        const heatmapData = [];
-        let percent = 0;
-        locations.forEach((location, index) => {
-          percent = (data[index][0] - min) / (max - min);
-          heatmapData.push({
-            location: new window.google.maps.LatLng(location[0], location[1]),
-            weight: percent * 30,
-          });
+        .then((json) => {
+          this.result = json.output[0][0];
         });
-
-        const charlotte = new window.google.maps.LatLng(35.2271, -80.8431);
-
-        const map = new window.google.maps.Map(document.getElementById('map'), {
-          center: charlotte,
-          zoom: 13,
-          mapTypeId: 'terrain',
-        });
-
-        const heatmap = new window.google.maps.visualization.HeatmapLayer({
-          data: heatmapData,
-        });
-        heatmap.setMap(map);
-        heatmap.set('radius', 100);
-      });
     },
-  },
-  components: {
-    Map,
   },
 };
 </script>

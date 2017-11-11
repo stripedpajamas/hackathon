@@ -57,26 +57,26 @@ const train = (req, res) => {
 const run = input => myPerceptron.activate(input);
 
 // yes crime, no weapon
-console.log('yes crime, no weapon:', myPerceptron.activate([
-  0.67673552,
-  0.09653388200000002,
-  0.01,
-  0.02,
-  0.09,
-  0.15,
-  0,
-]));
-
-// no crime, no weapon
-console.log('no crime, no weapon:', myPerceptron.activate([
-  0.66,
-  0.091,
-  0.05,
-  0.03,
-  0.21,
-  0.39,
-  0,
-]));
+// console.log('yes crime, no weapon:', myPerceptron.activate([
+//   0.67673552,
+//   0.09653388200000002,
+//   0.01,
+//   0.02,
+//   0.09,
+//   0.15,
+//   0,
+// ]));
+//
+// // no crime, no weapon
+// console.log('no crime, no weapon:', myPerceptron.activate([
+//   0.66,
+//   0.091,
+//   0.05,
+//   0.03,
+//   0.21,
+//   0.39,
+//   0,
+// ]));
 
 /* input should be
 {

@@ -27,7 +27,7 @@
     </v-navigation-drawer>
     <v-toolbar color="indigo" dark fixed app>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-      <v-toolbar-title>Charlotte Crime Heat Map</v-toolbar-title>
+      <v-toolbar-title>Charlotte Crime Prediction</v-toolbar-title>
     </v-toolbar>
     <main>
       <v-content>
