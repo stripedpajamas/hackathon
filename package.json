@@ -1,6 +1,9 @@
 {
   "name": "hackathon",
   "version": "0.0.1",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "synaptic": "^1.1.4",
     "express": "^4.16.2"

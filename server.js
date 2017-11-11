@@ -9,3 +9,5 @@ app.get('/machine', (req, res) => {
   let input;
   res.end(machine(input));
 });
+
+app.listen(3000, () => console.log('app listening on port 3000!'));
