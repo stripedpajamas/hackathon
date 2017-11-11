@@ -1,5 +1,5 @@
 const fs = require('fs');
-const points = require('./data/pointsData.json');
+const points = require('./data/pointsDataNew.json');
 //"points":[0.676300262,0.09629666,0.6761761104999999,0.09621465550000004]
 
 const output = [];
