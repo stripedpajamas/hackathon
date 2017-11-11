@@ -11,9 +11,15 @@ app.post('/machine', (req, res) => {
   const input = req.body.input;
   let output = [];
   if (Array.isArray(req.body.input)) {
-    output = input.map(x => machine(x));
+    output = input.map(values => {
+      // input [0] is going to be lat before squash, so squash them
+      values[0] = (values[0] + 100) / 200;
+      values[1] = (values[1] + 100) / 200;
+      return machine.run(values)
+    });
   }
-  res.end(output);
+  res.end(JSON.stringify({ output }));
 });
+app.get('/train', machine.train);
 
-app.listen(process.env.PORT || 3000, () => console.log('app listening on port 3000!'));
+app.listen(3000, () => console.log('app listening on port 3000!'));
