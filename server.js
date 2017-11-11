@@ -4,7 +4,7 @@ const cors = require('cors');
 const machine = require('./machine');
 
 const app = express();
-app.use(bodyParser.json({ limit: '100mb' }));
+app.use(body.json({ limit: '100mb' }));
 app.use(cors({
   origin: '*',
   credentials: true,
