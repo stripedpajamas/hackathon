@@ -4,8 +4,20 @@ const cors = require('cors');
 const machine = require('./machine');
 
 const app = express();
-app.use(body.json());
-app.use(cors());
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(cors({
+  origin: '*',
+  credentials: true,
+  allowedHeaders: [
+    'Origin', 'X-Requested-With', 'Content-Type',
+    'Accept', 'api-version', 'Authorization', 'Content-Length', 'Access-Control-Allow-Origin',
+    'Access-Control-Allow-Credentials'
+  ],
+  methods: [
+    'GET', 'PUT', 'POST',
+    'DELETE', 'OPTIONS'
+  ]
+}));
 
 app.get('/', express.static('./web/dist'));
 app.post('/machine', (req, res) => {
