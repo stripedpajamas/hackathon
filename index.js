@@ -1,26 +1,70 @@
 const synaptic = require('synaptic');
-const data = require('./data/cleanData');
+const data = require('./data/mergedData.json');
+const badData = require('./data/noCrimeDataMerged.json');
 
 const { Neuron, Layer, Network, Trainer, Architect } = synaptic;
 
-const myPerceptron = new Architect.Perceptron(4,3,1);
+const myPerceptron = new Architect.Perceptron(6,1,1);
 const myTrainer = new Trainer(myPerceptron);
 
 /*
-input: [locationLat, locationLong, time, date] => [0 or 1 (crime)]
+input: [lat1, long1, lat1, long2, time, date] => [0 or 1 (crime)]
  */
 
-const trainingSet = data.map((entry) => {
+const goodDataTraining = data.map((entry) => {
   return {
-    input: [entry.location[0], entry.location[1], entry.time, entry.date],
+    input: [
+      +entry.points[0],
+      +entry.points[1],
+      +entry.points[2],
+      +entry.points[3],
+      +entry.date,
+      +entry.time
+    ],
     output: [1]
   }
 });
 
-myTrainer.train(trainingSet, {
-  iterations: 50000
+const badDataTraining = badData.map((entry) => {
+  return {
+    input: [
+      +entry.points[0],
+      +entry.points[1],
+      +entry.points[2],
+      +entry.points[3],
+      +entry.date,
+      +entry.time
+    ],
+    output: [0]
+  }
 });
 
-console.log(myPerceptron.activate([0, 0, 0, 0, 0, 0, 1, 1])); // 3^2
-console.log(myPerceptron.activate([0, 0, 0, 0, 0, 1, 1, 0])); // 6^2 0010 0100 = 36
-// 00010101
+const mergedTrainingData = goodDataTraining.concat(badDataTraining);
+
+myTrainer.train(mergedTrainingData, {
+  rate: .1,
+  iterations: 20000,
+  error: .005,
+  shuffle: true,
+  cost: Trainer.cost.CROSS_ENTROPY
+});
+
+// 0.661,0.09,0.661,0.09,"where":"CLANTON RD  CHARLOTTE, NC 28217","date":".010114","time":".000800"}
+console.log(myPerceptron.activate([
+  0.661,
+  0.09,
+  0.661,
+  0.09,
+  0.072314,
+  0.110800
+]));
+
+// "where":"RED ROOF DR  CHARLOTTE, NC 28217","date":".010114","time":".002400"}
+console.log(myPerceptron.activate([
+  0.6757354746514576,
+  0.09552156040145754,
+  0.6757219848485425,
+  0.09550807059854251,
+  0.010114,
+  0.002400
+]));

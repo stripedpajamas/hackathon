@@ -12,4 +12,10 @@ const goodData = require('./data/cleanData');
 ]
  */
 
-goodData.map((entry) => ({ ...entry, time: +entry.time + 0.3}));
+goodData.map((entry) => {
+  let time = +entry.time.slice(2);
+  if (time < 23) {
+    // if the time is less than 11pm
+
+  }
+});
