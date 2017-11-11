@@ -4,7 +4,7 @@ const badData = require('./data/noCrimeDataMerged.json');
 
 const { Trainer, Architect } = synaptic;
 
-const myPerceptron = new Architect.Perceptron(7, 6, 3, 2);
+const myPerceptron = new Architect.Perceptron(7, 8, 2);
 const myTrainer = new Trainer(myPerceptron);
 
 /*
@@ -16,8 +16,8 @@ const goodDataTraining = data.map((entry) => (
     input: [
       entry.points[0],
       entry.points[1],
-      entry.points[2],
-      entry.points[3],
+      // entry.points[2],
+      // entry.points[3],
       entry.month,
       entry.day,
       entry.hour,
@@ -33,8 +33,8 @@ const badDataTraining = badData.map((entry) => (
     input: [
       entry.points[0],
       entry.points[1],
-      entry.points[2],
-      entry.points[3],
+      // entry.points[2],
+      // entry.points[3],
       entry.month,
       entry.day,
       entry.hour,
@@ -48,20 +48,18 @@ const badDataTraining = badData.map((entry) => (
 const mergedTrainingData = goodDataTraining.concat(badDataTraining);
 
 myTrainer.train(mergedTrainingData, {
-  // rate: 0.1,
+  rate: 0.1,
   iterations: 20000,
-  // error: 0.005,
-  // shuffle: true,
+  error: 0.005,
+  shuffle: true,
   log: 1000,
-  // cost: Trainer.cost.CROSS_ENTROPY,
+  cost: Trainer.cost.CROSS_ENTROPY,
 });
 
 // yes crime, no weapon
 console.log('yes crime, no weapon:', myPerceptron.activate([
   0.67673552,
   0.09653388200000002,
-  0.67642923,
-  0.09619320499999993,
   0.01,
   0.02,
   0.09,
@@ -71,8 +69,6 @@ console.log('yes crime, no weapon:', myPerceptron.activate([
 
 // no crime, no weapon
 console.log('no crime, no weapon:', myPerceptron.activate([
-  0.66,
-  0.091,
   0.66,
   0.091,
   0.05,
