@@ -74,7 +74,7 @@
           </v-card-title>
 
           <v-card-text>
-            <map></map>
+            <Map></Map>
           </v-card-text>
         </v-card>
       </v-flex>
@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import Map from '@/components/Heatmap/Map';
+import Map from '@/components/Heatmap/char-map';
 
 export default {
   name: 'Heatmap',

@@ -43,12 +43,17 @@
 </template>
 
 <script>
+import heatmap from './components/Heatmap';
+
 export default {
   name: 'app',
   data() {
     return {
       drawer: true,
     };
+  },
+  components: {
+    heatmap,
   },
 };
 </script>
