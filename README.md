@@ -6,7 +6,7 @@
 
 We started looking at the data last night, thinking of some way to implement a neural network that would actually have an impact on Charlotte's safety or the socioeconomic mobility. 
 
-America has been waking up to allegations of sexual assault, trafficking, domestic abuse, and other horrendous crimes far too often. What if we could create a neural network that would decrease the probability of these crimes by letting officers know when they're entering a probable crime, keeping them on alert of potential crime and weapons, and by simply patrolling the area, could potentially decrease the probability of these heinous crimes. 
+America has been waking up to allegations of sexual assault, trafficking, domestic abuse, and other horrendous crimes far too often. What if we could create a neural network that would decrease the probability of these crimes by letting officers know when they're entering a probable crime, keeping them on alert of potential crime and weapons, and by simply patrolling the area, could potentially decrease the probability of these heinous crimes. We also could help increase officer awareness.
 
 ### Solution
 
