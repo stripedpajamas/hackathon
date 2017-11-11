@@ -6,8 +6,8 @@ const output = [];
 
 let counter = 0;
 
-for (let i = .660; i < .690; i += 0.0001) {
-  for (let j = .09; j < .1; j += 0.0001) {
+for (let i = .660; i < .690; i += 0.001) {
+  for (let j = .09; j < .1; j += 0.001) {
     // check if these values are in the points data
     let found = false;
     for (let k = 0; k < points.length; k++) {
