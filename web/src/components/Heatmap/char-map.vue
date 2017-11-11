@@ -11,20 +11,21 @@ export default {
     return {};
   },
   mounted() {
-    fetch('https://hackathon-ysfkztzsac.now.sh/machine', {
+    fetch('https://hackathon-xlbpxxnemx.now.sh/machine', {
       method: 'post',
       body: JSON.stringify({
-        input: locationData,
+        input: locationData.coordinates,
       }),
-    }).then(response => response.json())
+    }).then(response => response.text())
     .then((data) => {
+      console.log(data);
       // get json data in here
       const locations = locationData.coordinates;
 
       const heatmapData = [];
-      locations.forEach((location, index) =>
+      locations.forEach(location =>
         heatmapData.push({
-          location: new window.google.maps.LatLng(location[0], location[1]), weight: data[index][0],
+          location: new window.google.maps.LatLng(location[0], location[1]), weight: Math.random(),
         }));
 
       const charlotte = new window.google.maps.LatLng(35.2271, -80.8431);
