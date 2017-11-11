@@ -61,6 +61,15 @@
               </v-flex>
             </v-layout>
           </v-card-text>
+
+          <v-card-actions>
+            <v-btn
+              @click.native="load"
+              flat color="orange"
+            >
+              Load
+            </v-btn>
+          </v-card-actions>
         </v-card>
       </v-flex>
     </v-flex>
@@ -83,7 +92,9 @@
 </template>
 
 <script>
+import moment from 'moment';
 import Map from '@/components/Heatmap/char-map';
+import locationData from '../../../data/locations.json';
 
 export default {
   name: 'Heatmap',
@@ -94,6 +105,60 @@ export default {
       date: null,
       time: null,
     };
+  },
+  methods: {
+    load() {
+      let { date, time } = this;
+      date = moment(date, 'YYY-MM-DD');
+      time = moment(time, 'h:mma');
+
+      // Add the timestamps to every single array item
+      for (let i = 0; i < locationData.coordinates.length; i += 1) {
+        locationData.coordinates[i].push(parseFloat(date.format('0.MM')));
+        locationData.coordinates[i].push(parseFloat(date.format('0.DD')));
+        locationData.coordinates[i].push(parseFloat(time.format('0.kk')));
+        locationData.coordinates[i].push(parseFloat(time.format('0.mm')));
+      }
+
+      const headers = new Headers();
+      headers.append('Content-Type', 'application/json');
+
+      fetch('https://hackathon-ydjpdnorqb.now.sh/machine', {
+        method: 'post',
+        headers,
+        body: JSON.stringify({
+          input: locationData.coordinates,
+        }),
+      }).then(response => response.json())
+      .then(() => {
+        // get json data in here
+        const locations = locationData.coordinates;
+        // const data = d.output;
+
+        const heatmapData = [];
+        locations.forEach(location =>
+          heatmapData.push({
+            location: new window.google.maps.LatLng(location[0], location[1]),
+            weight: Math.random() * 1000,
+          }));
+
+        console.log(heatmapData);
+
+        const charlotte = new window.google.maps.LatLng(35.2271, -80.8431);
+
+        const map = new window.google.maps.Map(document.getElementById('map'), {
+          center: charlotte,
+          zoom: 13,
+          mapTypeId: 'terrain',
+        });
+
+        const heatmap = new window.google.maps.visualization.HeatmapLayer({
+          data: heatmapData,
+        });
+        heatmap.setMap(map);
+        heatmap.set('radius', 100);
+      });
+    },
   },
   components: {
     Map,
