@@ -1,9 +1,11 @@
 const express = require('express');
 const body = require('body-parser');
+const cors = require('cors');
 const machine = require('./machine');
 
 const app = express();
 app.use(body.json());
+app.use(cors());
 
 app.get('/', express.static('./web/dist'));
 app.post('/machine', (req, res) => {
