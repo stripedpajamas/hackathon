@@ -4,7 +4,7 @@ const badData = require('./data/noCrimeDataMerged.json');
 
 const { Trainer, Architect } = synaptic;
 
-const myPerceptron = new Architect.Perceptron(6, 8, 2);
+const myPerceptron = new Architect.Perceptron(7, 8, 2);
 const myTrainer = new Trainer(myPerceptron);
 
 /*
@@ -50,7 +50,7 @@ const train = (req, res) => {
 
   myTrainer.train(mergedTrainingData, {
     rate: 0.1,
-    iterations: 10000,
+    iterations: 20000,
     error: 0.005,
     shuffle: true,
     log: 1000,
