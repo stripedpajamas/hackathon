@@ -4,7 +4,7 @@ const badData = require('./data/noCrimeDataMerged.json');
 
 const { Neuron, Layer, Network, Trainer, Architect } = synaptic;
 
-const myPerceptron = new Architect.Perceptron(6,1,1);
+const myPerceptron = new Architect.Perceptron(6, 6, 6, 3, 1);
 const myTrainer = new Trainer(myPerceptron);
 
 /*
@@ -44,7 +44,7 @@ const mergedTrainingData = goodDataTraining.concat(badDataTraining);
 myTrainer.train(mergedTrainingData, {
   rate: .1,
   iterations: 20000,
-  error: .005,
+  error: 0.005,
   shuffle: true,
   cost: Trainer.cost.CROSS_ENTROPY
 });
@@ -66,5 +66,7 @@ console.log(myPerceptron.activate([
   0.6757219848485425,
   0.09550807059854251,
   0.010114,
-  0.002400
+  0.002400,
 ]));
+module.exports = input => myPerceptron.activate(input);
+
