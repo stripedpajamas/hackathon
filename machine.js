@@ -2,71 +2,85 @@ const synaptic = require('synaptic');
 const data = require('./data/mergedData.json');
 const badData = require('./data/noCrimeDataMerged.json');
 
-const { Neuron, Layer, Network, Trainer, Architect } = synaptic;
+const { Trainer, Architect } = synaptic;
 
-const myPerceptron = new Architect.Perceptron(6, 6, 6, 3, 1);
+const myPerceptron = new Architect.Perceptron(7, 6, 3, 2);
 const myTrainer = new Trainer(myPerceptron);
 
 /*
-input: [lat1, long1, lat1, long2, time, date] => [0 or 1 (crime)]
+input: [lat1, long1, lat1, long2, month, day, hour, minute, weapon] => [0 or 1 (crime), 0 or 1 (weapon)]
  */
 
-const goodDataTraining = data.map((entry) => {
-  return {
+const goodDataTraining = data.map((entry) => (
+  {
     input: [
-      +entry.points[0],
-      +entry.points[1],
-      +entry.points[2],
-      +entry.points[3],
-      +entry.date,
-      +entry.time
+      entry.points[0],
+      entry.points[1],
+      entry.points[2],
+      entry.points[3],
+      entry.month,
+      entry.day,
+      entry.hour,
+      entry.minute,
+      entry.weapon,
     ],
-    output: [1]
+    output: [1, entry.weapon],
   }
-});
+));
 
-const badDataTraining = badData.map((entry) => {
-  return {
+const badDataTraining = badData.map((entry) => (
+  {
     input: [
-      +entry.points[0],
-      +entry.points[1],
-      +entry.points[2],
-      +entry.points[3],
-      +entry.date,
-      +entry.time
+      entry.points[0],
+      entry.points[1],
+      entry.points[2],
+      entry.points[3],
+      entry.month,
+      entry.day,
+      entry.hour,
+      entry.minute,
+      entry.weapon,
     ],
-    output: [0]
+    output: [0, entry.weapon],
   }
-});
+));
 
 const mergedTrainingData = goodDataTraining.concat(badDataTraining);
 
 myTrainer.train(mergedTrainingData, {
-  rate: .1,
+  // rate: 0.1,
   iterations: 20000,
-  error: 0.005,
-  shuffle: true,
-  cost: Trainer.cost.CROSS_ENTROPY
+  // error: 0.005,
+  // shuffle: true,
+  log: 1000,
+  // cost: Trainer.cost.CROSS_ENTROPY,
 });
 
-// 0.661,0.09,0.661,0.09,"where":"CLANTON RD  CHARLOTTE, NC 28217","date":".010114","time":".000800"}
-console.log(myPerceptron.activate([
-  0.661,
+// yes crime, no weapon
+console.log('yes crime, no weapon:', myPerceptron.activate([
+  0.67673552,
+  0.09653388200000002,
+  0.67642923,
+  0.09619320499999993,
+  0.01,
+  0.02,
   0.09,
-  0.661,
-  0.09,
-  0.072314,
-  0.110800
+  0.15,
+  0,
 ]));
 
-// "where":"RED ROOF DR  CHARLOTTE, NC 28217","date":".010114","time":".002400"}
-console.log(myPerceptron.activate([
-  0.6757354746514576,
-  0.09552156040145754,
-  0.6757219848485425,
-  0.09550807059854251,
-  0.010114,
-  0.002400,
+// no crime, no weapon
+console.log('no crime, no weapon:', myPerceptron.activate([
+  0.66,
+  0.091,
+  0.66,
+  0.091,
+  0.05,
+  0.03,
+  0.21,
+  0.39,
+  0,
 ]));
+
 module.exports = input => myPerceptron.activate(input);
 
