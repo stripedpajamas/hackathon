@@ -1,0 +1,11 @@
+{
+  "name": "hackathon",
+  "version": "0.0.1",
+  "dependencies": {
+    "csvtojson": "^1.1.9",
+    "synaptic": "^1.1.4"
+  },
+  "devDependencies": {
+    "vue-cli": "^2.9.1"
+  }
+}
