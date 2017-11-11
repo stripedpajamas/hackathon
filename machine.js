@@ -23,7 +23,7 @@ const train = (req, res) => {
         entry.day,
         entry.hour,
         entry.minute,
-        // entry.weapon,
+        entry.weapon,
       ],
       output: [1, entry.weapon],
     }
@@ -40,7 +40,7 @@ const train = (req, res) => {
         entry.day,
         entry.hour,
         entry.minute,
-        // entry.weapon,
+        entry.weapon,
       ],
       output: [0, entry.weapon],
     }
@@ -70,7 +70,7 @@ console.log('yes crime, no weapon:', myPerceptron.activate([
   0.02,
   0.09,
   0.15,
-  // 0,
+  0,
 ]));
 
 // no crime, no weapon
@@ -81,7 +81,7 @@ console.log('no crime, no weapon:', myPerceptron.activate([
   0.03,
   0.21,
   0.39,
-  // 0,
+  0,
 ]));
 
 /* input should be
