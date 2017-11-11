@@ -1,23 +1,85 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
-  </div>
+  <v-layout row wrap>
+    <v-flex xs12>
+      <v-flex xs12>
+        <v-card>
+          <v-card-title primary-title>
+            <div class="headline">Map</div>
+          </v-card-title>
+
+          <v-card-text>
+            <v-layout>
+              <v-flex xs6>
+                <v-dialog
+                  persistent
+                  v-model="dateModal"
+                  lazy
+                  full-width
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Date"
+                    v-model="date"
+                    prepend-icon="event"
+                    readonly
+                  ></v-text-field>
+                  <v-date-picker v-model="date" scrollable actions>
+                    <template slot-scope="{ save, cancel }">
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
+                        <v-btn flat color="primary" @click="save">OK</v-btn>
+                      </v-card-actions>
+                    </template>
+                  </v-date-picker>
+                </v-dialog>
+              </v-flex>
+
+              <v-flex xs6>
+                <v-dialog
+                  persistent
+                  v-model="timeModal"
+                  lazy
+                  full-width
+                >
+                  <v-text-field
+                    slot="activator"
+                    label="Time"
+                    v-model="time"
+                    prepend-icon="access_time"
+                    readonly
+                  ></v-text-field>
+                  <v-time-picker v-model="time" actions>
+                    <template slot-scope="{ save, cancel }">
+                      <v-card-actions>
+                        <v-btn flat color="primary" @click="cancel">Cancel</v-btn>
+                        <v-btn flat color="primary" @click="save">Save</v-btn>
+                      </v-card-actions>
+                    </template>
+                  </v-time-picker>
+                </v-dialog>
+              </v-flex>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-flex>
+
+
+    <v-flex xs12>
+      <v-flex xs12>
+        <v-card>
+          <v-card-title primary-title>
+            <div class="headline">Map</div>
+          </v-card-title>
+
+          <v-card-text>
+            <map></map>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -27,7 +89,10 @@ export default {
   name: 'Heatmap',
   data() {
     return {
-      msg: 'Welcome to Your Vue.js App',
+      dateModal: false,
+      timeModal: false,
+      date: null,
+      time: null,
     };
   },
   components: {
