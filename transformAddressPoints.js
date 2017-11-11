@@ -1,5 +1,5 @@
 const fs = require('fs');
-const input = require('./data/locationData.json');
+const input = require('./googleGeocodeData/outputData10.json');
 
 const returnArray = input.map((val) => {
   if (val && val.id) {
@@ -10,4 +10,4 @@ const returnArray = input.map((val) => {
   }
 });
 
-fs.writeFileSync('pointsData.json', JSON.stringify(returnArray));
+fs.writeFileSync('./data/pointsData10.json', JSON.stringify(returnArray));
