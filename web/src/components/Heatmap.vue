@@ -130,19 +130,29 @@ export default {
           input: locationData.coordinates,
         }),
       }).then(response => response.json())
-      .then(() => {
+      .then((d) => {
         // get json data in here
         const locations = locationData.coordinates;
-        // const data = d.output;
+        const data = d.output;
+
+        let min = 99999;
+        for (let i = 0; i < data.length; i += 1) {
+          if (data[i][0] < min) min = data[i][0];
+        }
+        let max = 0;
+        for (let i = 0; i < data.length; i += 1) {
+          if (data[i][0] > max) max = data[i][0];
+        }
 
         const heatmapData = [];
-        locations.forEach(location =>
+        let percent = 0;
+        locations.forEach((location, index) => {
+          percent = (data[index][0] - min) / (max - min);
           heatmapData.push({
             location: new window.google.maps.LatLng(location[0], location[1]),
-            weight: Math.random() * 1000,
-          }));
-
-        console.log(heatmapData);
+            weight: percent * 30,
+          });
+        });
 
         const charlotte = new window.google.maps.LatLng(35.2271, -80.8431);
 
